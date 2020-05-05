@@ -3,15 +3,19 @@ package com.ork821;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainWindow extends JFrame {
+    private final HashMap<JButton, JPanel> inputList;
     private JPanel panel;
     private JScrollPane scrollPane;
     private JPanel mainList;
 
+
     public MainWindow(String label) {
         super(label);
+        this.inputList = new HashMap<JButton, JPanel>();
     }
 
     public void createGui() {
@@ -19,6 +23,14 @@ public class MainWindow extends JFrame {
         this.createTopInputPanel();
         this.createScroll();
         this.createBottomButtons();
+    }
+
+    public JPanel getMainList() {
+        return this.mainList;
+    }
+
+    public HashMap<JButton, JPanel> getInputList() {
+        return this.inputList;
     }
 
     private void createBottomButtons() {
@@ -49,50 +61,13 @@ public class MainWindow extends JFrame {
     private void createTopInputPanel() {
         GridBagConstraints c = new GridBagConstraints();
         JPanel inputPanel = new JPanel(new GridBagLayout());
-        JTextField textField = new JTextField("Enter URL here:");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.9;
-        c.gridx = 0;
-        c.gridy = 0;
-        textField.setFocusable(false);
-        inputPanel.add(textField, c);
-        textField.addMouseListener(new TextFieldMouseListener(textField));
-        textField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                textField.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                //textField.setText("Enter URL here:");
-            }
-        });
 
         JButton button = new JButton("+");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.1;
+        c.weightx = 1;
         c.gridx = 1;
         c.gridy = 0;
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JPanel panel = new JPanel();
-                String text = textField.getText();
-                JButton button = new JButton("-");
-                panel.add(new JLabel(text));
-                panel.add(button);
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridwidth = GridBagConstraints.REMAINDER;
-                gbc.weightx = 1;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                mainList.add(panel, gbc, 0);
-                textField.setText("");
-                validate();
-                repaint();
-            }
-
-        });
+        button.addActionListener(new AddButtonActionListener(this));
         inputPanel.add(button, c);
 
         this.panel.add(inputPanel, BorderLayout.NORTH);
