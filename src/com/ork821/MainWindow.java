@@ -8,6 +8,7 @@ import java.awt.event.*;
 public class MainWindow extends JFrame {
     private JPanel panel;
     private JScrollPane scrollPane;
+    private JPanel mainList;
 
     public MainWindow(String label) {
         super(label);
@@ -36,48 +37,26 @@ public class MainWindow extends JFrame {
     }
 
     private void createScroll() {
-        this.scrollPane = new JScrollPane();
+        this.mainList = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        this.scrollPane = new JScrollPane(mainList);
         panel.add(this.scrollPane, BorderLayout.CENTER);
     }
 
     private void createTopInputPanel() {
         GridBagConstraints c = new GridBagConstraints();
         JPanel inputPanel = new JPanel(new GridBagLayout());
-        TextField textField = new TextField("Enter URL here:");
+        JTextField textField = new JTextField("Enter URL here:");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.9;
         c.gridx = 0;
         c.gridy = 0;
         textField.setFocusable(false);
         inputPanel.add(textField, c);
-        textField.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                textField.setFocusable(true);
-                textField.requestFocus();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
+        textField.addMouseListener(new TextFieldMouseListener(textField));
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -86,7 +65,7 @@ public class MainWindow extends JFrame {
 
             @Override
             public void focusLost(FocusEvent e) {
-                textField.setText("Enter URL here:");
+                //textField.setText("Enter URL here:");
             }
         });
 
@@ -95,6 +74,25 @@ public class MainWindow extends JFrame {
         c.weightx = 0.1;
         c.gridx = 1;
         c.gridy = 0;
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel panel = new JPanel();
+                String text = textField.getText();
+                JButton button = new JButton("-");
+                panel.add(new JLabel(text));
+                panel.add(button);
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                gbc.weightx = 1;
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                mainList.add(panel, gbc, 0);
+                textField.setText("");
+                validate();
+                repaint();
+            }
+
+        });
         inputPanel.add(button, c);
 
         this.panel.add(inputPanel, BorderLayout.NORTH);
