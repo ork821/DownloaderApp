@@ -1,8 +1,7 @@
-package com.ork821;
+package com.ork821.downloading;
 
 import com.ork821.exceptions.UrlErrorCodes;
 import com.ork821.exceptions.UrlException;
-import netscape.javascript.JSObject;
 import org.json.JSONObject;
 
 import java.io.*;

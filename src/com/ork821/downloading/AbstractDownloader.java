@@ -1,4 +1,4 @@
-package com.ork821;
+package com.ork821.downloading;
 
 import com.ork821.exceptions.UrlException;
 
