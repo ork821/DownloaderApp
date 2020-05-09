@@ -3,13 +3,16 @@ package com.ork821;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+
 import java.util.HashMap;
-import java.util.Map;
+
 
 public class MainWindow extends JFrame {
-    private final HashMap<JButton, JPanel> inputList;
+    final HashMap<JButton, JPanel> inputList;
     private JPanel panel;
+
     private JScrollPane scrollPane;
+
     private JPanel mainList;
 
 
@@ -29,10 +32,6 @@ public class MainWindow extends JFrame {
         return this.mainList;
     }
 
-    public HashMap<JButton, JPanel> getInputList() {
-        return this.inputList;
-    }
-
     private void createBottomButtons() {
         GridBagConstraints c = new GridBagConstraints();
         JPanel buttons = new JPanel(new GridBagLayout());
@@ -40,6 +39,7 @@ public class MainWindow extends JFrame {
         c.gridx = 0;
         c.gridy = 0;
         JButton but1 = new JButton("Add to folder");
+        but1.addActionListener(new AddToFolderActionHandler(inputList));
         JButton but2 = new JButton("Add to archive");
         buttons.add(but1, c);
         c.gridx = 1;
@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        this.scrollPane = new JScrollPane(mainList);
+        this.scrollPane = new JScrollPane(this.mainList);
         panel.add(this.scrollPane, BorderLayout.CENTER);
     }
 

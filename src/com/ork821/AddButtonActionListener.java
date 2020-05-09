@@ -4,13 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 
 
 public class AddButtonActionListener implements ActionListener {
-
-    HashMap<JButton, JPanel> urlFields;
 
     private int position = 0;
 
@@ -23,6 +28,7 @@ public class AddButtonActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
         JTextField textField = new JTextField();
@@ -30,13 +36,13 @@ public class AddButtonActionListener implements ActionListener {
         c.weightx = 0.9;
         c.gridx = 0;
         c.gridy = 0;
-        panel.add(textField, c);
+        panel.add(textField, c, 0);
 
         JButton button = new JButton("-");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JPanel panel = window.getInputList().get(button);
+                JPanel panel = window.inputList.get(button);
                 window.getMainList().remove(panel);
                 position--;
                 window.validate();
@@ -46,7 +52,7 @@ public class AddButtonActionListener implements ActionListener {
         c.weightx = 0.1;
         c.gridx = 1;
         c.gridy = 0;
-        panel.add(button, c);
+        panel.add(button, c, 1);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -54,7 +60,7 @@ public class AddButtonActionListener implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         window.getMainList().add(panel, gbc, position++);
-        window.getInputList().put(button, panel);
+        window.inputList.put(button, panel);
         window.validate();
         window.repaint();
     }
